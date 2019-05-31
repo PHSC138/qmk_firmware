@@ -61,4 +61,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define QMK_ESC_INPUT B3 // usually ROW
 #define QMK_LED E6
 
+#define TAPPING_TERM 200 // Tap dance tap limit
+
 #endif
