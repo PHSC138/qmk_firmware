@@ -1,4 +1,5 @@
 #include QMK_KEYBOARD_H
+#include "config.h"
 
 // These are all aliases for the  function layers.
 #define _BASE	0
@@ -60,11 +61,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 
 // LEFT AND RIGHT SHIFT: '(' and ')' when tapped, shift when held
+// TODO: SPACE CADET WITH [ and {
 [_PROG] = LAYOUT(
   _______,		_______,	_______,	_______,	_______,	_______,	_______,	_______,	_______,	_______,	_______,	_______,	_______,	\
   _______,		_______,	_______,	_______,	_______,	_______,	_______,	_______,	_______,	_______,	_______,				_______,	\
   KC_LSPO,		_______,	_______,	_______,	_______,	_______,	_______,	_______,	_______,	_______,	KC_RSPC,				_______,	\
-  _______,		_______,	_______,	TO(_GAME),	_______,				_______,				_______,	_______,	_______,				_______),	\
+  _______,	_______,		_______,	TO(_GAME),	_______,				_______,				_______,	_______,	_______,				_______),	\
+  /* LCPO_KEYS,	_______,	LAPO_KEYS,	TO(_GAME),	_______,				_______,				_______,	RAPC_KEYS,	_______,				RCPC_KEYS),	\
+*/
 
 
 // Macro for right space is bhop
