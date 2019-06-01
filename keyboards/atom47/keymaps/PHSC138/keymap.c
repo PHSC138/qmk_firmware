@@ -27,13 +27,13 @@ enum {
 
 //Tap dance enums
 enum {
-  S_PROG = 0,
+  PN_SWAP = 0,
 };
 
 int cur_dance (qk_tap_dance_state_t *state);
-//for the x tap dance. Put it here so it can be used in any keymap
-void x_finished (qk_tap_dance_state_t *state, void *user_data);
-void x_reset (qk_tap_dance_state_t *state, void *user_data);
+//for the pn tap dance. Put it here so it can be used in any keymap
+void pn_finished (qk_tap_dance_state_t *state, void *user_data);
+void pn_reset (qk_tap_dance_state_t *state, void *user_data);
 
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -56,28 +56,25 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_ESC,		KC_Q,		KC_W,		KC_E,		KC_R,		KC_T,		KC_Y,		KC_U,		KC_I,		KC_O,		KC_P,		KC_DEL,		KC_BSPC,	\
   KC_TAB,		KC_A,		KC_S,		KC_D,		KC_F,		KC_G,		KC_H,		KC_J,		KC_K,		KC_L,		KC_SCLN,				KC_ENT,		\
   KC_LSFT,		KC_Z,		KC_X,		KC_C,		KC_V,		KC_B,		KC_N,		KC_M,		KC_COMM,	KC_DOT,		KC_RSFT,				MO(_FN1),	\
-  KC_LCTL,		KC_LGUI,	KC_LALT,	TD(S_PROG),	KC_SPC,					KC_SPC,					MO(_FN),	KC_RALT,	KC_APP,					KC_RCTRL),	\
+  KC_LCTL,		KC_LGUI,	KC_LALT,	TD(PN_SWAP),KC_SPC,					KC_SPC,					MO(_FN),	KC_RALT,	KC_APP,					KC_RCTRL),	\
 
 
 // LEFT AND RIGHT SHIFT: '(' and ')' when tapped, shift when held
 [_PROG] = LAYOUT(
-  KC_ESC,		KC_Q,		KC_W,		KC_E,		KC_R,		KC_T,		KC_Y,		KC_U,		KC_I,		KC_O,		KC_P,		KC_DEL,		KC_BSPC,	\
-  KC_TAB,		KC_A,		KC_S,		KC_D,		KC_F,		KC_G,		KC_H,		KC_J,		KC_K,		KC_L,		KC_SCLN,				KC_ENT,		\
-  KC_LSPO,		KC_Z,		KC_X,		KC_C,		KC_V,		KC_B,		KC_N,		KC_M,		KC_COMM,	KC_DOT,		KC_RSPC,				MO(_FN1),	\
-  KC_LCTL,		KC_LGUI,	KC_LALT,	TO(_GAME),	KC_SPC,					KC_SPC,					MO(_FN),	KC_RALT,	KC_APP,					KC_RCTRL),	\
+  _______,		_______,	_______,	_______,	_______,	_______,	_______,	_______,	_______,	_______,	_______,	_______,	_______,	\
+  _______,		_______,	_______,	_______,	_______,	_______,	_______,	_______,	_______,	_______,	_______,				_______,	\
+  KC_LSPO,		_______,	_______,	_______,	_______,	_______,	_______,	_______,	_______,	_______,	KC_RSPC,				_______,	\
+  _______,		_______,	_______,	TO(_GAME),	_______,				_______,				_______,	_______,	_______,				_______),	\
 
 
-//MT(mod, kc) - is mod (modifier key - MOD_LCTL, MOD_LSFT) when held, and kc when tapped.
-
-// Macro for 'pn' is to return to base layer
 // Macro for right space is bhop
 // Maco for 'fn' is move forward
 // Macro for 'fn1' is spin constantly
 [_GAME] = LAYOUT(
-  KC_ESC,		KC_Q,		KC_W,		KC_E,		KC_R,		KC_T,		KC_Y,		KC_U,		KC_I,		KC_O,		KC_P,		KC_DEL,		KC_BSPC,	\
-  KC_TAB,		KC_A,		KC_S,		KC_D,		KC_F,		KC_G,		KC_H,		KC_J,		KC_K,		KC_L,		KC_SCLN,				KC_ENT,		\
-  KC_LSFT,		KC_Z,		KC_X,		KC_C,		KC_V,		KC_B,		KC_N,		KC_M,		KC_COMM,	KC_DOT,		KC_RSFT,				XXXXXXX,	\
-  KC_LCTL,		KC_LGUI,	KC_LALT,	TO(_BASE),	KC_SPC,					XXXXXXX,				XXXXXXX,	KC_RALT,	XXXXXXX,				KC_RCTRL),	\
+  _______,		_______,	_______,	_______,	_______,	_______,	_______,	_______,	_______,	_______,	_______,	_______,	_______,	\
+  _______,		_______,	_______,	_______,	_______,	_______,	_______,	_______,	_______,	_______,	_______,				_______,	\
+  _______,		_______,	_______,	_______,	_______,	_______,	_______,	_______,	_______,	_______,	_______,				XXXXXXX,	\
+  _______,		_______,	_______,	TO(_BASE),	_______,				XXXXXXX,				XXXXXXX,	_______,	XXXXXXX,				_______),	\
 
 
 [_FN] = LAYOUT(
@@ -101,14 +98,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   _______,		_______,	_______,	_______,	_______,				KC_0,					_______,	_______,	DEBUG,					RESET),	\
 };
 
-
-// NUMLOCK always on:
-void led_set_keymap(uint8_t usb_led) {
-  if (!(usb_led & (1<<USB_LED_NUM_LOCK))) {
-    register_code(KC_NUMLOCK);
-    unregister_code(KC_NUMLOCK);
-  }
-}
 
 /* Return an integer that corresponds to what kind of tap dance should be executed.
  *
@@ -137,41 +126,41 @@ void led_set_keymap(uint8_t usb_led) {
  * For the third point, there does exist the 'DOUBLE_SINGLE_TAP', however this is not fully tested
  *
  */
-int cur_dance (qk_tap_dance_state_t *state) {
-  if (state->count == 1) {
-    if (state->interrupted || !state->pressed)  return SINGLE_TAP;
+int cur_dance(qk_tap_dance_state_t *state) {
+  if(state->count == 1) {
+    if(state->interrupted || !state->pressed) return SINGLE_TAP;
     //key has not been interrupted, but they key is still held. Means you want to send a 'HOLD'.
     else return SINGLE_HOLD;
   }
-  else if (state->count == 2) {
+  else if(state->count == 2) {
     /*
      * DOUBLE_SINGLE_TAP is to distinguish between typing "pepper", and actually wanting a double tap
      * action when hitting 'pp'. Suggested use case for this return value is when you want to send two
      * keystrokes of the key, and not the 'double tap' action/macro.
     */
-    if (state->interrupted) return DOUBLE_SINGLE_TAP;
-    else if (state->pressed) return DOUBLE_HOLD;
+    if(state->interrupted) return DOUBLE_SINGLE_TAP;
+    else if(state->pressed) return DOUBLE_HOLD;
     else return DOUBLE_TAP;
   }
   //Assumes no one is trying to type the same letter three times (at least not quickly).
   //If your tap dance key is 'KC_W', and you want to type "www." quickly - then you will need to add
   //an exception here to return a 'TRIPLE_SINGLE_TAP', and define that enum just like 'DOUBLE_SINGLE_TAP'
-  if (state->count == 3) {
-    if (state->interrupted || !state->pressed)  return TRIPLE_TAP;
+  if(state->count == 3) {
+    if(state->interrupted || !state->pressed) return TRIPLE_TAP;
     else return TRIPLE_HOLD;
   }
   else return 8; //magic number. At some point this method will expand to work for more presses
 }
 
-//instanalize an instance of 'tap' for the 'x' tap dance.
-static tap xtap_state = {
+//instanalize an instance of 'tap' for the 'pn' tap dance.
+static tap pn_tap_state = {
   .is_press_action = true,
   .state = 0
 };
 
-void x_finished (qk_tap_dance_state_t *state, void *user_data) {
-  xtap_state.state = cur_dance(state);
-  switch (xtap_state.state) {
+void pn_finished(qk_tap_dance_state_t *state, void *user_data) {
+  pn_tap_state.state = cur_dance(state);
+  switch(pn_tap_state.state) {
     case SINGLE_TAP: layer_on(_PROG); break;
     case SINGLE_HOLD: layer_on(_NUM); break;
     //case DOUBLE_TAP: register_code(KC_ESC); break;
@@ -183,17 +172,17 @@ void x_finished (qk_tap_dance_state_t *state, void *user_data) {
   }
 }
 
-void x_reset (qk_tap_dance_state_t *state, void *user_data) {
-  switch (xtap_state.state) {
+void pn_reset(qk_tap_dance_state_t *state, void *user_data) {
+  switch(pn_tap_state.state) {
     //case SINGLE_TAP: unregister_code(KC_X); break;
     case SINGLE_HOLD: layer_off(_NUM); break;
     //case DOUBLE_TAP: unregister_code(KC_ESC); break;
     //case DOUBLE_HOLD: unregister_code(KC_LALT);
     //case DOUBLE_SINGLE_TAP: unregister_code(KC_X);
   }
-  xtap_state.state = 0;
+  pn_tap_state.state = 0;
 }
 
 qk_tap_dance_action_t tap_dance_actions[] = {
-  [S_PROG]		= ACTION_TAP_DANCE_FN_ADVANCED(NULL,x_finished, x_reset)
+  [PN_SWAP]		= ACTION_TAP_DANCE_FN_ADVANCED(NULL,pn_finished, pn_reset)
 };
