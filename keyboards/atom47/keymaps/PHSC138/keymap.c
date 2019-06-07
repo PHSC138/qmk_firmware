@@ -29,6 +29,10 @@ enum {
 //Tap dance enums
 enum {
   PN_SWAP = 0,
+  LAPO = 1,
+  LCPO = 2,
+  RAPC = 3,
+  RCPC = 4,
 };
 
 int cur_dance (qk_tap_dance_state_t *state);
@@ -61,14 +65,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 
 // LEFT AND RIGHT SHIFT: '(' and ')' when tapped, shift when held
+// LEFT AND RIGHT CTRL: '{' and '}' when tapped, ctrl when held
 // TODO: SPACE CADET WITH [ and {
 [_PROG] = LAYOUT(
   _______,		_______,	_______,	_______,	_______,	_______,	_______,	_______,	_______,	_______,	_______,	_______,	_______,	\
   _______,		_______,	_______,	_______,	_______,	_______,	_______,	_______,	_______,	_______,	_______,				_______,	\
   KC_LSPO,		_______,	_______,	_______,	_______,	_______,	_______,	_______,	_______,	_______,	KC_RSPC,				_______,	\
-  _______,	_______,		_______,	TO(_GAME),	_______,				_______,				_______,	_______,	_______,				_______),	\
-  /* LCPO_KEYS,	_______,	LAPO_KEYS,	TO(_GAME),	_______,				_______,				_______,	RAPC_KEYS,	_______,				RCPC_KEYS),	\
-*/
+  TD(LCPO),		_______,	TD(LAPO),	TO(_GAME),	_______,				_______,				_______,	TD(RAPC),	_______,				TD(RCPC)),	\
 
 
 // Macro for right space is bhop
@@ -187,6 +190,94 @@ void pn_reset(qk_tap_dance_state_t *state, void *user_data) {
   pn_tap_state.state = 0;
 }
 
+static tap lalt_tap_state = {
+  .is_press_action = true,
+  .state = 0
+};
+
+void lalt_finished(qk_tap_dance_state_t *state, void *user_data) {
+  lalt_tap_state.state = cur_dance(state);
+  switch(lalt_tap_state.state) {
+    case SINGLE_TAP: register_code(KC_LBRC); break;
+    case SINGLE_HOLD: register_code(KC_LALT); break;
+  }
+}
+
+void lalt_reset(qk_tap_dance_state_t *state, void *user_data) {
+  switch(lalt_tap_state.state) {
+    case SINGLE_TAP: unregister_code(KC_LBRC); break;
+    case SINGLE_HOLD: layer_off(KC_LALT); break;
+  }
+  lalt_tap_state.state = 0;
+}
+
+static tap ralt_tap_state = {
+  .is_press_action = true,
+  .state = 0
+};
+
+void ralt_finished(qk_tap_dance_state_t *state, void *user_data) {
+  ralt_tap_state.state = cur_dance(state);
+  switch(ralt_tap_state.state) {
+    case SINGLE_TAP: register_code(KC_RBRC); break;
+    case SINGLE_HOLD: register_code(KC_RALT); break;
+  }
+}
+
+void ralt_reset(qk_tap_dance_state_t *state, void *user_data) {
+  switch(ralt_tap_state.state) {
+    case SINGLE_TAP: unregister_code(KC_RBRC); break;
+    case SINGLE_HOLD: layer_off(KC_RALT); break;
+  }
+  ralt_tap_state.state = 0;
+}
+
+static tap rctl_tap_state = {
+  .is_press_action = true,
+  .state = 0
+};
+
+void rctl_finished(qk_tap_dance_state_t *state, void *user_data) {
+  rctl_tap_state.state = cur_dance(state);
+  switch(rctl_tap_state.state) {
+    case SINGLE_TAP: register_code(KC_RSFT); register_code(KC_RBRC); break;
+    case SINGLE_HOLD: register_code(KC_RCTL); break;
+  }
+}
+
+void rctl_reset(qk_tap_dance_state_t *state, void *user_data) {
+  switch(rctl_tap_state.state) {
+    case SINGLE_TAP: unregister_code(KC_RSHIFT); unregister_code(KC_RBRC); break;
+    case SINGLE_HOLD: layer_off(KC_RCTL); break;
+  }
+  rctl_tap_state.state = 0;
+}
+
+static tap lctl_tap_state = {
+  .is_press_action = true,
+  .state = 0
+};
+
+void lctl_finished(qk_tap_dance_state_t *state, void *user_data) {
+  lctl_tap_state.state = cur_dance(state);
+  switch(lctl_tap_state.state) {
+    case SINGLE_TAP: register_code(KC_LSFT); register_code(KC_LBRC); break;
+    case SINGLE_HOLD: register_code(KC_LCTL); break;
+  }
+}
+
+void lctl_reset(qk_tap_dance_state_t *state, void *user_data) {
+  switch(lctl_tap_state.state) {
+    case SINGLE_TAP: unregister_code(KC_LSHIFT); unregister_code(KC_LBRC); break;
+    case SINGLE_HOLD: layer_off(KC_LCTL); break;
+  }
+  lctl_tap_state.state = 0;
+}
+
 qk_tap_dance_action_t tap_dance_actions[] = {
-  [PN_SWAP]		= ACTION_TAP_DANCE_FN_ADVANCED(NULL,pn_finished, pn_reset)
+  [PN_SWAP]		= ACTION_TAP_DANCE_FN_ADVANCED(NULL, pn_finished, pn_reset),
+  [LAPO]		= ACTION_TAP_DANCE_FN_ADVANCED(NULL, lalt_finished, lalt_reset),
+  [RAPC]		= ACTION_TAP_DANCE_FN_ADVANCED(NULL, ralt_finished, ralt_reset),
+  [LCPO]		= ACTION_TAP_DANCE_FN_ADVANCED(NULL, lctl_finished, lctl_reset),
+  [RCPC]		= ACTION_TAP_DANCE_FN_ADVANCED(NULL, rctl_finished, rctl_reset),
 };
