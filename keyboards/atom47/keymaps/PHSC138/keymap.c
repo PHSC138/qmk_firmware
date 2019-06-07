@@ -43,20 +43,20 @@ void pn_reset (qk_tap_dance_state_t *state, void *user_data);
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 // TREE: 'pn' to enter custom layers:
-	// _BASE
-		// _FN
-		// _FN1
-		// TODO: _NUM
-		// _PROG
-	// _PROG
-		// _FN
-		// _FN1
-		// TODO: _NUM
-		// _GAME
-	// _GAME
-		// _BASE
+    // _BASE
+        // _FN
+        // _FN1
+        // _NUM
+        // _PROG
+    // _PROG
+        // _FN
+        // _FN1
+        // TODO: _NUM
+        // _GAME
+    // _GAME
+    // _BASE
 
-// TODO tap pn for toggle to _PROG, hold for numpad
+// Tap pn for toggle to _PROG, or hold for numpad
 [_BASE] = LAYOUT(
   KC_ESC,		KC_Q,		KC_W,		KC_E,		KC_R,		KC_T,		KC_Y,		KC_U,		KC_I,		KC_O,		KC_P,		KC_DEL,		KC_BSPC,	\
   KC_TAB,		KC_A,		KC_S,		KC_D,		KC_F,		KC_G,		KC_H,		KC_J,		KC_K,		KC_L,		KC_SCLN,				KC_ENT,		\
@@ -66,7 +66,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 // LEFT AND RIGHT SHIFT: '(' and ')' when tapped, shift when held
 // LEFT AND RIGHT CTRL: '{' and '}' when tapped, ctrl when held
-// TODO: SPACE CADET WITH [ and {
+// LEFT AND RIGHT ALT: '[' and ']' when tapped, ctrl when held
 [_PROG] = LAYOUT(
   _______,		_______,	_______,	_______,	_______,	_______,	_______,	_______,	_______,	_______,	_______,	_______,	_______,	\
   _______,		_______,	_______,	_______,	_______,	_______,	_______,	_______,	_______,	_______,	_______,				_______,	\
@@ -206,7 +206,7 @@ void lalt_finished(qk_tap_dance_state_t *state, void *user_data) {
 void lalt_reset(qk_tap_dance_state_t *state, void *user_data) {
   switch(lalt_tap_state.state) {
     case SINGLE_TAP: unregister_code(KC_LBRC); break;
-    case SINGLE_HOLD: layer_off(KC_LALT); break;
+    case SINGLE_HOLD: unregister_code(KC_LALT); break;
   }
   lalt_tap_state.state = 0;
 }
@@ -227,7 +227,7 @@ void ralt_finished(qk_tap_dance_state_t *state, void *user_data) {
 void ralt_reset(qk_tap_dance_state_t *state, void *user_data) {
   switch(ralt_tap_state.state) {
     case SINGLE_TAP: unregister_code(KC_RBRC); break;
-    case SINGLE_HOLD: layer_off(KC_RALT); break;
+    case SINGLE_HOLD: unregister_code(KC_RALT); break;
   }
   ralt_tap_state.state = 0;
 }
@@ -248,7 +248,7 @@ void rctl_finished(qk_tap_dance_state_t *state, void *user_data) {
 void rctl_reset(qk_tap_dance_state_t *state, void *user_data) {
   switch(rctl_tap_state.state) {
     case SINGLE_TAP: unregister_code(KC_RSHIFT); unregister_code(KC_RBRC); break;
-    case SINGLE_HOLD: layer_off(KC_RCTL); break;
+    case SINGLE_HOLD: unregister_code(KC_RCTL); break;
   }
   rctl_tap_state.state = 0;
 }
@@ -269,7 +269,7 @@ void lctl_finished(qk_tap_dance_state_t *state, void *user_data) {
 void lctl_reset(qk_tap_dance_state_t *state, void *user_data) {
   switch(lctl_tap_state.state) {
     case SINGLE_TAP: unregister_code(KC_LSHIFT); unregister_code(KC_LBRC); break;
-    case SINGLE_HOLD: layer_off(KC_LCTL); break;
+    case SINGLE_HOLD: unregister_code(KC_LCTL); break;
   }
   lctl_tap_state.state = 0;
 }
@@ -281,3 +281,4 @@ qk_tap_dance_action_t tap_dance_actions[] = {
   [LCPO]		= ACTION_TAP_DANCE_FN_ADVANCED(NULL, lctl_finished, lctl_reset),
   [RCPC]		= ACTION_TAP_DANCE_FN_ADVANCED(NULL, rctl_finished, rctl_reset),
 };
+
