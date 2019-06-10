@@ -74,6 +74,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   TD(LCPO),		_______,	TD(LAPO),	TO(_GAME),	_______,				_______,				_______,	TD(RAPC),	_______,				TD(RCPC)),	\
 
 
+// TODO: D20
 // Macro for right space is bhop
 // Maco for 'fn' is move forward
 // Macro for 'fn1' is spin constantly
