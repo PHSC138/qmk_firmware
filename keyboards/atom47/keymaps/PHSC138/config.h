@@ -2,7 +2,7 @@
 #define PHSC138_CONFIG_H
 
 
-#define TAPPING_TERM 200 // Tap dance tap limit
+#define TAPPING_TERM 100 // Tap dance time limit
 //#define LCPO_KEYS KC_LCTL, KC_LSFT, KC_LBRC
 //#define RCPC_KEYS KC_RCTL, KC_LSFT, KC_RBRC
 //#define LAPO_KEYS KC_LALT, KC_TRNS, KC_LBRC
