@@ -1,5 +1,7 @@
 #include QMK_KEYBOARD_H
 #include "config.h"
+#include <time.h>
+#include <stdlib.h>
 
 // These are all aliases for the  function layers.
 #define _BASE	0
@@ -33,10 +35,11 @@ enum {
     LCPO = 2,
     RAPC = 3,
     RCPC = 4,
+    D20 = 5
 };
 
+
 int cur_dance (qk_tap_dance_state_t *state);
-//for the pn tap dance. Put it here so it can be used in any keymap
 void pn_finished (qk_tap_dance_state_t *state, void *user_data);
 void pn_reset (qk_tap_dance_state_t *state, void *user_data);
 
@@ -74,14 +77,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     TD(LCPO),		_______,	TD(LAPO),	TO(_GAME),	_______,				_______,				_______,	TD(RAPC),	_______,				TD(RCPC)),	\
 
 
-// TODO: D20
 // Macro for right space is bhop
 // Maco for 'fn' is move forward
 // Macro for 'fn1' is spin constantly
+// Macro for right shift is D20
 [_GAME] = LAYOUT(
     _______,		_______,	_______,	_______,	_______,	_______,	_______,	_______,	_______,	_______,	_______,	_______,	_______,	\
     _______,		_______,	_______,	_______,	_______,	_______,	_______,	_______,	_______,	_______,	_______,				_______,	\
-    _______,		_______,	_______,	_______,	_______,	_______,	_______,	_______,	_______,	_______,	_______,				XXXXXXX,	\
+    _______,		_______,	_______,	_______,	_______,	_______,	_______,	_______,	_______,	_______,	TD(D20),				XXXXXXX,	\
     _______,		_______,	_______,	TO(_BASE),	_______,				XXXXXXX,				XXXXXXX,	_______,	XXXXXXX,				_______),	\
 
 
@@ -274,10 +277,34 @@ void lctl_reset(qk_tap_dance_state_t *state, void *user_data) {
     lctl_tap_state.state = 0;
 }
 
+static tap d20_tap_state = {
+    .is_press_action = true,
+    .state = 0,
+};
+
+int d20_srand = 0;
+
+void d20_finished(qk_tap_dance_state_t *state, void *user_data) {
+    if(d20_srand == 0){
+        srand(time(NULL));
+        d20_srand = 1;
+    }
+    d20_tap_state.state = cur_dance(state);
+    int r = rand() % 20 + 1;
+    char *string = (char*)malloc(sizeof(char*) * 4);
+    sprintf(string, "%d", r);
+    send_string(string);
+}
+
+void d20_reset(qk_tap_dance_state_t *state, void *user_data) {
+    d20_tap_state.state = 0;
+}
+
 qk_tap_dance_action_t tap_dance_actions[] = {
-    [PN_SWAP]		= ACTION_TAP_DANCE_FN_ADVANCED(NULL, pn_finished, pn_reset),
+    [PN_SWAP]	= ACTION_TAP_DANCE_FN_ADVANCED(NULL, pn_finished, pn_reset),
     [LAPO]		= ACTION_TAP_DANCE_FN_ADVANCED(NULL, lalt_finished, lalt_reset),
     [RAPC]		= ACTION_TAP_DANCE_FN_ADVANCED(NULL, ralt_finished, ralt_reset),
     [LCPO]		= ACTION_TAP_DANCE_FN_ADVANCED(NULL, lctl_finished, lctl_reset),
     [RCPC]		= ACTION_TAP_DANCE_FN_ADVANCED(NULL, rctl_finished, rctl_reset),
+    [D20]		= ACTION_TAP_DANCE_FN_ADVANCED(NULL, d20_finished, d20_reset),
 };
