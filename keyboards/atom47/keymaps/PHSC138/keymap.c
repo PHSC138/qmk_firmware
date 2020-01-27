@@ -1,7 +1,7 @@
 #include QMK_KEYBOARD_H
 #include "config.h"
 #include <stdlib.h>
-#include <time.h>
+//#include <time.h>
 
 // These are all aliases for the  function layers.
 #define _BASE	0
@@ -290,8 +290,10 @@ void d20_finished(qk_tap_dance_state_t *state, void *user_data) {
         case SINGLE_HOLD: {
             if(d20_srand == 0){
                 char *string = (char*)malloc(sizeof(char*) * 16);
-                srand((unsigned int)time(NULL));
-                snprintf(string, 10, "%d", (unsigned int)time(NULL));
+                uint16_t timer_seed = timer_read();
+                srand((unsigned int)timer_seed);
+                //snprintf(string, 10, "%d", (unsigned int)time(NULL));
+                snprintf(string, 10, "%d", (unsigned int)timer_seed);
                 send_string(string);
                 SEND_STRING(": seed");
                 d20_srand = 1;
