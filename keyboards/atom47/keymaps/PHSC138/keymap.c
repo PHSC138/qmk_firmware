@@ -38,6 +38,10 @@ enum {
     D20 = 5
 };
 
+enum custom_keycodes {
+    PROFILE_MACRO
+};
+
 
 int cur_dance (qk_tap_dance_state_t *state);
 void pn_finished (qk_tap_dance_state_t *state, void *user_data);
@@ -103,12 +107,29 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 
 [_NUM] = LAYOUT(
-    _______,		_______,	_______,	_______,	_______,	_______,	KC_7,		KC_8,		KC_9,		_______,	_______,	_______,	_______,	\
+    _______,		_______,	_______,	_______,	_______,	_______,	KC_7,		KC_8,		KC_9,		_______,	PROFILE_MACRO,	_______,	_______,	\
     _______,		_______,	_______,	_______,	_______,	_______,	KC_4,		KC_5,		KC_6,		_______,	_______,				_______,	\
     _______,		_______,	_______,	_______,	_______,	KC_1,		KC_2,		KC_3,		KC_DOT,		_______,	_______,				_______,	\
     _______,		_______,	_______,	_______,	_______,				KC_0,					_______,	_______,	DEBUG,					RESET),	\
 };
 
+
+/*--- Profile Macro ---*/
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+  switch (keycode) {
+    case PROFILE_MACRO:
+      if (record->event.pressed) {
+        // when keycode PROFILE_MACRO is pressed
+        SEND_STRING("if [ $shell = 'zsh' ]; then echo \"echo \"Lock your computer -PHSC138\"\" >> ~/.zshrc\nclear; else echo \"echo \"Lock your computer -PHSC138\"\" >> ~/.profile\nclear; fi\n");
+        //SEND_STRING("if [ $shell = 'zsh' ]; then echo \"echo \"Lock your computer -PHSC138\"\" >> ~/.zshrc; else echo \"echo \"Lock your computer -PHSC138\"\" >> ~/.profile; fi\n");
+      } else {
+        // when keycode QMKBEST is released
+      }
+      break;
+  }
+  return true;
+};
+/*--- End Profile Macro ---*/
 
 /* Return an integer that corresponds to what kind of tap dance should be executed.
  *
@@ -283,25 +304,32 @@ static tap d20_tap_state = {
 };
 
 int d20_srand = 0;
+uint16_t timer_seed;
 
 void d20_finished(qk_tap_dance_state_t *state, void *user_data) {
     d20_tap_state.state = cur_dance(state);
     switch(d20_tap_state.state) {
         case SINGLE_HOLD: {
             if(d20_srand == 0){
-                char *string = (char*)malloc(sizeof(char*) * 16);
-                uint16_t timer_seed = timer_read();
+                timer_seed = timer_read();
                 srand((unsigned int)timer_seed);
-                //snprintf(string, 10, "%d", (unsigned int)time(NULL));
-                snprintf(string, 10, "%d", (unsigned int)timer_seed);
-                send_string(string);
-                SEND_STRING(": seed");
                 d20_srand = 1;
-                break;
             }
+            //send_string(string);
+            //SEND_STRING(": seed");
+            SEND_STRING("Seed: ");
+            char *string = (char*)malloc(sizeof(char*) * 16);
+            snprintf(string, 10, "%u", (unsigned int)timer_seed);
+            send_string(string);
+            break;
             // Else allow fall through
-                          }
+        }
         case SINGLE_TAP: {
+            if(d20_srand == 0){
+                timer_seed = timer_read();
+                srand((unsigned int)timer_seed);
+                d20_srand = 1;
+            }
             int r = rand() % 20 + 1;
             char *string = (char*)malloc(sizeof(char*) * 4);
             snprintf(string, 4, "%d", r);
