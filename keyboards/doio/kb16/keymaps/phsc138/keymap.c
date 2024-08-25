@@ -111,7 +111,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 \*=============================================*/
     /*  Row:    0        1        2        3        4       */
     [_NUMPAD] = LAYOUT(
-                KC_KP_7, KC_KP_8, KC_KP_9, KC_PAST, _______,
+                KC_KP_7, KC_KP_8, KC_KP_9, KC_PAST, KC_LNUM,
                 KC_KP_4, KC_KP_5, KC_KP_6, KC_PMNS, TO(_ADMIN),
                 KC_KP_1, KC_KP_2, KC_KP_3, KC_PPLS, _______,
                 KC_KP_0, KC_PSLS, KC_PDOT, KC_PENT
