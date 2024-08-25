@@ -1,0 +1,160 @@
+[
+  {
+    "name": "Vortex Core",
+    "switchMount": "cherry",
+    "switchBrand": "cherry",
+    "pcb": true
+  },
+  [
+    {
+      "c": "#9B9381",
+      "t": "#000000\n\n\n\n#B81B24",
+      "p": "DSA",
+      "sm": "cherry",
+      "sb": "cherry",
+      "a": 3,
+      "f": 4
+    },
+    "ESC\n\n\n\n`",
+    {
+      "c": "#C7C0B5",
+      "t": "#000000\n\n\n\n#B81B24\n#2E6EA6"
+    },
+    "Q\n\n\n\nF1\n<i class='fa fa-volume-down'></i>",
+    "W\n\n\n\nF2\n<i class='fa fa-volume-up'></i>",
+    "E\n\n\n\nF3\n<i class='fa fa-volume-off'></i>",
+    "R\n\n\n\nF4\nRst",
+    "T\n\n\n\nF5\n1.5ms",
+    "Y\n\n\n\nF6\nCal",
+    "U\n\n\n\nF7\nPgUp",
+    "I\n\n\n\nF8\n&uarr;",
+    "O\n\n\n\nF9\nPgDn",
+    "P\n\n\n\nF10\nPrt",
+    {
+      "c": "#9B9381"
+    },
+    "Del\n\n\n\nF11\nScr",
+    {
+      "f": 3
+    },
+    "&larr;\n\n\n\nF12\nPse"
+  ],
+  [
+    {
+      "f": 4,
+      "w": 1.25
+    },
+    "Caps\n\n\n\n1\nTab",
+    {
+      "c": "#C7C0B5"
+    },
+    "A\n\n\n\n2\n<i class='fa fa-backward'></i>",
+    "S\n\n\n\n3\n<i class='fa fa-play'></i><i class='fa fa-pause'></i>",
+    "D\n\n\n\n4\n<i class='fa fa-forward'></i>",
+    {
+      "t": "#000000\n\n\n\n#B81B24"
+    },
+    "F\n\n\n\n5",
+    {
+      "t": "#000000\n\n\n\n#B81B24\n#2E6EA6"
+    },
+    "G\n\n\n\n6\n0.1s",
+    "H\n\n\n\n7\nHome",
+    "J\n\n\n\n8\n&larr;",
+    "K\n\n\n\n9\n&darr;",
+    "L\n\n\n\n0\n&rarr;",
+    {
+      "a": 1,
+      "f": 8
+    },
+    ":\n;\n\n\n-\nIns",
+    {
+      "c": "#9B9381",
+      "t": "#000000\n\n\n\n#B81B24",
+      "a": 3,
+      "f": 3,
+      "w": 1.75
+    },
+    "Enter\n\n\n\n="
+  ],
+  [
+    {
+      "t": "#000000",
+      "a": 7,
+      "f": 4,
+      "w": 1.75
+    },
+    "Shift",
+    {
+      "c": "#C7C0B5"
+    },
+    "Z",
+    "X",
+    "C",
+    "V",
+    {
+      "t": "#000000\n\n\n\n#B81B24\n#2E6EA6",
+      "a": 3
+    },
+    "B\n\n\n\n'\n0.5s",
+    "N\n\n\n\n/\nEnd",
+    "M\n\n\n\n[\nL0",
+    {
+      "a": 1
+    },
+    "<\n,\n\n\n]\nL1",
+    ">\n.\n\n\n\\\nL2",
+    {
+      "c": "#9B9381",
+      "t": "#000000\n\n\n\n\n#2E6EA6",
+      "a": 3,
+      "w": 1.25
+    },
+    "Shift\n\n\n\n\nL3",
+    {
+      "t": "#000000",
+      "a": 4,
+      "f": 3
+    },
+    "Fn",
+    {
+      "x": -1,
+      "t": "#B81B24",
+      "a": 7,
+      "f": 4
+    },
+    "Fn1"
+  ],
+  [
+    {
+      "t": "#000000",
+      "w": 1.25
+    },
+    "Ctrl",
+    "Win",
+    "Alt",
+    "Pn",
+    {
+      "w": 1.75
+    },
+    "",
+    {
+      "w": 2.75
+    },
+    "",
+    {
+      "t": "#2E6EA6"
+    },
+    "Fn",
+    {
+      "t": "#000000"
+    },
+    "Alt",
+    "Menu",
+    {
+      "f": 3,
+      "w": 1.25
+    },
+    "Ctrl"
+  ]
+]
